@@ -1,0 +1,91 @@
+{:paths ["src/bb"]
+
+ :tasks
+ {:init
+  (do
+    (def css-input-path "src/styles.css"))
+
+  -dev:watch-css
+  {:requires
+   ([babashka.process :as process]
+    [notiv.util :as util])
+   :task
+   (let [process
+         (process/process
+          ["npx" "tailwindcss"
+           "--watch"
+           "--input" css-input-path
+           "--output" "target/dev/resources/public/assets/css/styles.css"]
+          {:shutdown process/destroy-tree})]
+     (util/print-prefixed-process-output "[tailwindcss]" process))}
+
+  -dev:shadow-cljs
+  {:requires
+   ([babashka.process :as process]
+    [notiv.util :as util])
+   :task
+   (let [process
+         (process/process
+          ["clojure" "-M:dev:test:cljs:shadow-cljs"
+           "-m" "shadow.cljs.devtools.cli"
+           "watch" "app" "test"]
+          {:shutdown process/destroy-tree})]
+     (util/print-prefixed-process-output "[shadow-cljs]" process))}
+
+  -dev
+  {:depends [-dev:watch-css -dev:shadow-cljs]}
+
+  dev
+  {:doc "Start development server"
+   :task
+   (do
+     (println "Starting...")
+     (run '-dev {:parallel true}))}
+
+  -release:create-dirs
+  {:requires ([babashka.fs :as fs])
+   :task
+   (do
+     (fs/create-dirs "target/release/resources/public")
+     (fs/copy-tree "src/main/public" "target/release/resources/public"))}
+
+  -release:build-css
+  {:requires
+   ([babashka.process :as process]
+    [notiv.util :as util])
+   :task
+   (let [process
+         (process/process
+          ["npx" "tailwindcss"
+           "--minify"
+           "--input" css-input-path
+           "--output" "target/release/resources/public/assets/css/styles.css"]
+          {:shutdown process/destroy-tree})]
+     (util/print-prefixed-process-output "[tailwindcss]" process))}
+
+  -release:shadow-cljs
+  {:requires
+   ([babashka.process :as process]
+    [notiv.util :as util])
+   :task
+   (let [process
+         (process/process
+          ["clojure" "-M:dev:test:cljs:shadow-cljs"
+           "-m" "shadow.cljs.devtools.cli"
+           "release" "app"]
+          {:shutdown process/destroy-tree})]
+     (util/print-prefixed-process-output "[shadow-cljs]" process))}
+
+  release
+  {:doc "Build release"
+   :depends [-release:create-dirs -release:build-css -release:shadow-cljs]}
+
+  release:clean
+  {:doc "Clean release"
+   :requires ([babashka.fs :as fs])
+   :task (fs/delete-tree "target/release")}
+
+  import-tailwind-colors
+  {:doc "Import tailwindcss/colors to project"
+   :requires ([notiv.import-tailwind-colors])
+   :task (notiv.import-tailwind-colors/import-tailwind-colors "src/main/notiv/colors.edn")}}}

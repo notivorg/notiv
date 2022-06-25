@@ -1,0 +1,16 @@
+{:paths ["src/main"]
+
+ :deps {org.clojure/clojure {:mvn/version "1.11.0-rc1"}}
+
+ :aliases
+ {:dev {:extra-paths ["src/build" "target/dev/resources"]}
+
+  :test {:extra-paths ["src/test"]}
+
+  :cljs
+  {:extra-deps
+   {lilactown/helix {:mvn/version "0.1.6"}
+    com.lambdaisland/glogi {:mvn/version "1.1.144"}
+    instaparse/instaparse {:mvn/version "1.4.10"}}}
+
+  :shadow-cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.17.8"}}}}}

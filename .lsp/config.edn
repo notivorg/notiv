@@ -1,0 +1,2 @@
+{:source-aliases #{:dev :test}
+ :project-specs [{:project-path "deps.edn" :classpath-cmd ["clojure" "-A:dev:test:cljs:shadow-cljs" "-Spath"]}]}

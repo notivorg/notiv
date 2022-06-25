@@ -1,0 +1,18 @@
+FROM clojure
+
+RUN apt-get update && \
+    apt-get install -y curl npm && \
+    curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install && \
+    chmod +x install && \
+    ./install
+
+WORKDIR /build
+
+COPY . /build
+
+RUN rm -rf target/release node_modules
+
+RUN npm install
+
+RUN bb release:clean
+RUN bb release

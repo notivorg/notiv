@@ -1,0 +1,21 @@
+{:deps true
+
+ :dev-http {3000 "classpath:public"
+            3001 "target/test"}
+
+ :builds
+ {:app
+  {:target :browser
+   :output-dir "target/dev/resources/public/assets/js"
+   :asset-path "/assets/js"
+   :modules {:main {:init-fn notiv.main/main}}
+
+   :dev
+   {:compiler-options {:output-feature-set :es6}}
+
+   :release
+   {:output-dir "target/release/resources/public/assets/js"}}
+
+  :test
+  {:target :browser-test
+   :test-dir "target/test"}}}

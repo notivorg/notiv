@@ -1,0 +1,19 @@
+name: clj-kondo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-clj-kondo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: DeLaGuardo/clojure-lint-action@master
+        with:
+          clj-kondo-args: --lint src --fail-level error
+          github_token: ${{ secrets.GITHUB_TOKEN }}
