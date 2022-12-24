@@ -16,6 +16,16 @@
    :release
    {:output-dir "target/release/resources/public/assets/js"}}
 
+  :devcards
+  {:target :browser
+   :output-dir "target/devcards/resources/public/assets/devcards/js"
+   :asset-path "/assets/devcards/js"
+   :modules {:main {:init-fn notiv.devcards/main}}
+   :compiler-options {:devcards true
+                      :output-feature-set :es-next}
+   :js-options {:resolve {"devcards-marked" {:target :npm :require "marked"}
+                          "devcards-syntax-highlighter" {:target :npm :require "highlight.js"}}}}
+
   :test
   {:target :browser-test
    :test-dir "target/test"}}}
