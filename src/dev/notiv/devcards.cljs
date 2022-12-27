@@ -1,7 +1,8 @@
 (ns notiv.devcards
   (:require
+   [devcards-marked]
    [devcards.core :as devcards]
-   [devcards-marked]))
+   [notiv.ui.grid2-cards]))
 
 (set! js/window.DevcardsMarked devcards-marked/marked)
 
