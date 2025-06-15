@@ -26,9 +26,9 @@
    :task
    (let [process
          (process/process
-          ["clojure" "-M:dev:test:cljs:devcards:shadow-cljs"
+          ["clojure" "-M:dev:test:cljs:shadow-cljs"
            "-m" "shadow.cljs.devtools.cli"
-           "watch" "app" "devcards" "test"]
+           "watch" "app" #_"devcards" "test"]
           {:shutdown process/destroy-tree})]
      (util/print-prefixed-process-output "[shadow-cljs]" process))}
 
@@ -47,7 +47,7 @@
    :task
    (do
      (fs/create-dirs "target/release/resources/public")
-     (fs/copy "src/dev/public/index.html" "target/release/resources/public"))}
+     (fs/copy-tree "src/dev/public" "target/release/resources/public"))}
 
   -release:build-css
   {:requires
