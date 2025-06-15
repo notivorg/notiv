@@ -22,7 +22,7 @@
 
         npm-cache = pkgs.fetchNpmDeps {
           src = ./.;
-          hash = "sha256-P9PG0bM3gt2J43ycMTzoABFqT5MQQL8K4ZNCJwwbNRE=";
+          hash = "sha256-Ih/q0uS3/qtJ8SwoIDChl16QZczsSxASG6GGrcUfe2c=";
         };
       in {
         devShell = pkgs.mkShell {
@@ -43,15 +43,10 @@
           version = "alpha";
           src = ./.;
 
-          nativeBuildInputs = with pkgs; [
-            coreutils
-            clojure
-            babashka
-            nodejs
-            breakpointHook
-          ];
+          nativeBuildInputs = with pkgs; [ coreutils clojure babashka nodejs ];
 
           npm_config_cache = npm-cache;
+          npm_config_offline = true;
 
           buildPhase = ''
             source ${clj-locker.shellEnv}
